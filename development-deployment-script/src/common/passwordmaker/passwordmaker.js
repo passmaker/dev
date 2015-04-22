@@ -1,6 +1,6 @@
 angular.module('passwordmaker', [])
 
-.service('pMaker', ["$q", function($q) {
+.service('pMaker', function($q) {
 
   var noHmac = function(Algo) {
     return function(key, data, chars) {
@@ -73,6 +73,6 @@ angular.module('passwordmaker', [])
     return deferred.promise;
   };
 
-}])
+})
 
 ;

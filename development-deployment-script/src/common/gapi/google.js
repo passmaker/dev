@@ -1,6 +1,6 @@
 angular.module('google.api', [])
 
-  .service('gAuth', ["$q", "gAuthConfiguration", function($q, gAuthConfiguration) {
+  .service('gAuth', function($q, gAuthConfiguration) {
 
     var self = this;
     self.token = {
@@ -54,9 +54,9 @@ angular.module('google.api', [])
       }
       return deferred.promise;
     };
-  }])
+  })
 
-  .service('gAuthHttpInterceptor', ["gAuth", function(gAuth) {
+  .service('gAuthHttpInterceptor', function(gAuth) {
     return {
       'request': function(config) {
         if (config.url.indexOf('https://www.googleapis.com/') === 0) {
@@ -65,13 +65,13 @@ angular.module('google.api', [])
         return config;
       }
     };
-  }])
+  })
 
-  .config(["$httpProvider", function($httpProvider) {
+  .config(function($httpProvider) {
     $httpProvider.interceptors.push('gAuthHttpInterceptor');
-  }])
+  })
 
-  .service('gHttp', ["$http", function($http) {
+  .service('gHttp', function($http) {
     this.req = function(command) {
 
       var self = this;
@@ -136,9 +136,9 @@ angular.module('google.api', [])
 
       return self;
     };
-  }])
+  })
 
-  .service('gDrive', ["gHttp", function(gHttp) {
+  .service('gDrive', function(gHttp) {
 
     this.get = function(fileId) {
       return gHttp.req('GET /drive/v2/files/' + fileId)
@@ -168,4 +168,4 @@ angular.module('google.api', [])
                   .multipart(mimeType, content)
                   .$http();
     };
-  }]);
+  });
