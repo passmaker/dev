@@ -20,19 +20,19 @@ angular.module( 'passmaker', [
   ]
 })
 
-.config(function($urlRouterProvider) {
+.config(["$urlRouterProvider", function($urlRouterProvider) {
   $urlRouterProvider.otherwise('/generator');
-})
+}])
 
-.run(function($location, $window) {
+.run(["$location", "$window", function($location, $window) {
   // force https protocol on domain passmaker.github.io (production)
   if ('https' != $location.protocol() && 'passmaker.github.io' == $location.host()) {
     console.log('Detected unsecure protocol, redirecting to https version');
     $window.location.href = $location.absUrl().replace(/^http:/, 'https:');
   }
-})
+}])
 
-.controller('PassMakerCtrl', function($scope, gAuth, passMakerConf) {
+.controller('PassMakerCtrl', ["$scope", "gAuth", "passMakerConf", function($scope, gAuth, passMakerConf) {
   $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
     if (angular.isDefined(toState.data.pageTitle)) {
       $scope.pageTitle = toState.data.pageTitle ;
@@ -59,7 +59,7 @@ angular.module( 'passmaker', [
     gAuth.login().then(onAuthSuccess, onAuthFailure);
   };
 
-})
+}])
 
 .service('profile', function() {
   return {
@@ -70,7 +70,7 @@ angular.module( 'passmaker', [
   };
 })
 
-.service('passMakerConf', function($q, gDrive, profile, passMakerVersion) {
+.service('passMakerConf', ["$q", "gDrive", "profile", "passMakerVersion", function($q, gDrive, profile, passMakerVersion) {
 
   var update = function(newProfile) {
     profile.hashAlgorithm = newProfile.hashAlgorithm;
@@ -126,9 +126,9 @@ angular.module( 'passmaker', [
       gDrive.create(mime, data, metadata);
     });
   };
-})
+}])
 
-.service('profileManager', function (profile) {
+.service('profileManager', ["profile", function (profile) {
   this.getProfile = function(inputText) {
     var p = {
       custom: false,
@@ -152,7 +152,7 @@ angular.module( 'passmaker', [
     });
     return p;
   };
-})
+}])
 
 ;
 

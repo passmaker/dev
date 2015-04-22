@@ -2,16 +2,16 @@ angular.module('passmaker.generator', [
   'ui.router'
 ])
 
-.config(function($stateProvider) {
+.config(["$stateProvider", function($stateProvider) {
   $stateProvider.state('generator', {
     url: '/generator',
     templateUrl: 'generator/generator.tpl.html',
     controller: 'PasswordGeneratorCtrl',
     data: { pageTitle: 'Password Generator' }
   });
-})
+}])
 
-.controller('PasswordGeneratorCtrl', function($scope, profileManager, pMaker) {
+.controller('PasswordGeneratorCtrl', ["$scope", "profileManager", "pMaker", function($scope, profileManager, pMaker) {
 
   $scope.generatePassword = function() {
     // generate a random value to display the master password control hash
@@ -36,6 +36,6 @@ angular.module('passmaker.generator', [
         $scope.error = error;
       });
   };
-})
+}])
 
 ;

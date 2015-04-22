@@ -4,16 +4,16 @@ angular.module('passmaker.configuration', [
   'ui.bootstrap.tpls'
 ])
 
-.config(function($stateProvider) {
+.config(["$stateProvider", function($stateProvider) {
   $stateProvider.state('configuration', {
     url: '/configuration',
     templateUrl: 'configuration/configuration.tpl.html',
     controller: 'ConfigurationCtrl',
     data: { pageTitle: 'Configuration' }
   });
-})
+}])
 
-.controller('ConfigurationCtrl', function($scope, profile, pMaker, passMakerConf, $modal, $q) {
+.controller('ConfigurationCtrl', ["$scope", "profile", "pMaker", "passMakerConf", "$modal", function($scope, profile, pMaker, passMakerConf, $modal) {
 
   $scope.hashAlgorithms = pMaker.supportedAlgorithms();
 
@@ -33,24 +33,6 @@ angular.module('passmaker.configuration', [
     $scope.profile.exceptions.splice(i, 1);
   };
 
-  $scope.suggestConstraints = function(query) {
-    var characterSets = [
-      'digit', 'letter', 'lowercase letter', 'uppercase letter', 'of ,.-!'
-    ];
-    var tags = [];
-    var qryStruct = /^(?:(\d+)(?:\s(.*))?)|(?:.*)$/i.exec(query);
-    var inputAmount = qryStruct[1] || '1';
-    var inputCharacterSet = qryStruct[2] || '';
-    angular.forEach(characterSets, function(characterSet) {
-      if (characterSet.indexOf(inputCharacterSet) > -1) {
-        tags.push(inputAmount + ' ' + characterSet);
-      }
-    });
-    var deferred = $q.defer();
-    deferred.resolve(tags);
-    return deferred.promise;
-  };
-
   $scope.restoreConfiguration = function() {
     passMakerConf.load();
   };
@@ -66,9 +48,9 @@ angular.module('passmaker.configuration', [
   $scope.saveConfiguration = function() {
     passMakerConf.save();
   };
-})
+}])
 
-.service('profileManager', function(profile) {
+.service('profileManager', ["profile", function(profile) {
   this.getProfile = function(inputText) {
     var p = {
       custom: false,
@@ -89,6 +71,6 @@ angular.module('passmaker.configuration', [
     });
     return p;
   };
-})
+}])
 
 ;
