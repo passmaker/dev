@@ -95,12 +95,6 @@ angular.module("configuration/configuration.tpl.html", []).run(["$templateCache"
     "            </div>\n" +
     "          </div>\n" +
     "        </div>\n" +
-    "        <div class=\"form-group\">\n" +
-    "          <label class=\"col-sm-3 control-label\">Constraints</label>\n" +
-    "          <div class=\"col-sm-9\">\n" +
-    "            <tags-input ng-model=\"tags\" />\n" +
-    "          </div>\n" +
-    "        </div>\n" +
     "      </li>\n" +
     "      <li class=\"list-group-item\">\n" +
     "        <div class=\"pull-right\">\n" +

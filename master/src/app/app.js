@@ -3,7 +3,6 @@ angular.module( 'passmaker', [
   'templates-common',
   'ui.router',
   'ui.bootstrap.collapse',
-  'ngTagsInput',
   // internal deps
   'google.api',
   'passwordmaker',
