@@ -145,7 +145,13 @@ angular.module( 'passmaker', [
       constraints: []
     };
     angular.forEach(profile.exceptions, function(exception) {
-      if (inputText && inputText == exception.service) {
+      var matches = false;
+      angular.forEach(exception.patterns, function(pattern) {
+        if (new RegExp('^' + pattern.text + '$', 'i').test(inputText)) {
+          matches = true;
+        }
+      });
+      if (matches) {
         p.custom = true;
         if (exception.passwordLength.override === true) {
           p.passwordLength = exception.passwordLength.value;

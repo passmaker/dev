@@ -52,10 +52,10 @@ angular.module("configuration/configuration.tpl.html", []).run(["$templateCache"
     "    <ul class=\"list-group\">\n" +
     "      <li class=\"list-group-item\" ng-repeat=\"exception in profile.exceptions\">\n" +
     "        <div class=\"form-group\">\n" +
-    "          <label for=\"exception-{{ $index }}\" class=\"col-sm-3 control-label\">Service</label>\n" +
+    "          <label for=\"exception-{{ $index }}\" class=\"col-sm-3 control-label\">Input text patterns</label>\n" +
     "          <div class=\"col-sm-9\">\n" +
     "            <div class=\"input-group\">\n" +
-    "              <input id=\"exception-{{ $index }}\" type=\"text\" class=\"form-control\" ng-model=\"exception.service\" />\n" +
+    "              <tags-input id=\"exception-{{ $index }}\" ng-model=\"exception.patterns\" placeholder=\"*.google.com\" add-on-blur=\"false\" allow-leftover-text=\"false\" replace-spaces-with-dashes=\"false\"></tags-input>\n" +
     "              <span class=\"input-group-btn\">\n" +
     "                <button class=\"btn btn-danger\" type=\"button\" ng-click=\"removeException($index)\">Remove</button>\n" +
     "              </span>\n" +
@@ -87,7 +87,7 @@ angular.module("configuration/configuration.tpl.html", []).run(["$templateCache"
     "        <div class=\"form-group\">\n" +
     "          <label for=\"constraints-{{ $index }}\" class=\"col-sm-3 control-label\">Constraints</label>\n" +
     "          <div class=\"col-sm-9\">\n" +
-    "            <tags-input id=\"constraints-{{ $index }}\" ng-model=\"exception.constraints\" placeholder=\"1 digit, 1 uppercase letter, 1 of #~!,$\" add-on-blur=\"false\" allow-leftover-text=\"false\" replace-spaces-with-dashes=\"false\">\n" +
+    "            <tags-input id=\"constraints-{{ $index }}\" ng-model=\"exception.constraints\" placeholder=\"1 uppercase letter\" add-on-blur=\"false\" allow-leftover-text=\"false\" replace-spaces-with-dashes=\"false\">\n" +
     "              <auto-complete source=\"suggestConstraints($query)\" min-length=\"1\" load-on-down-arrow=\"true\" load-on-focus=\"true\"></auto-complete>\n" +
     "            </tags-input>\n" +
     "          </div>\n" +
@@ -129,7 +129,7 @@ angular.module("generator/generator.tpl.html", []).run(["$templateCache", functi
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group has-feedback\">\n" +
-    "    <label for=\"inputText\" class=\"col-sm-3 control-label\">Input text</label>\n" +
+    "    <label for=\"inputText\" class=\"col-sm-3 control-label\">Input text / URL</label>\n" +
     "    <div class=\"col-sm-9\">\n" +
     "      <input id=\"inputText\" type=\"text\" class=\"form-control\" ng-model=\"inputText\" ng-change=\"generatePassword()\" />\n" +
     "      <span ng-if=\"customProfile\" class=\"glyphicon glyphicon-bookmark form-control-feedback\"></span>\n" +
