@@ -89,7 +89,7 @@ angular.module('passwordmaker', [])
       pLength = pLength - mandatory.length;
       var pass = hash(algo, masterPassword, data, chars, pLength);
       angular.forEach(mandatory, function(characters) {
-        var i = parseInt(hash(algo, masterPassword, data, '0123456789', pLength.length), '10') % pLength;
+        var i = parseInt(hash(algo, masterPassword, data, '0123456789', pLength.toString().length), '10') % pLength;
         var c = hash(algo, masterPassword, data, characters + characters, 1);
         pass = [pass.slice(0, i), c, pass.slice(i)].join('');
       });
