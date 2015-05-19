@@ -1,0 +1,27 @@
+<html ng-app>
+  <head>
+    <meta charset="utf-8">
+    <title>Angular.js Example</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+    <script type="text/javascript">
+      function indexController($scope, $http){
+        $http.get('https://api.github.com/repos/passmaker/passmaker-online/branches').success(function(data) {
+          $scope.branches = data;
+        });
+        $http.get('https://api.github.com/repos/passmaker/passmaker-online/pulls').success(function(data) {
+          $scope.pullRequests = data;
+        });
+      }
+    </script>
+  </head>
+  <body ng-controller="indexController">
+    <ul>
+      <li ng-repeat="branch in branches">
+        <a href="/dev/{{ branch.name }}">{{ branch.name }}</a>
+      </li>
+      <li ng-repeat="pr in pullRequests">
+        <a href="/dev/pull-request/{{ pr.id }}">#{{ pr.id }}</a>
+      </li>
+    </ul>
+  </body>
+</html>
