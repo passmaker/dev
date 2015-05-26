@@ -1,27 +1,81 @@
-<html ng-app>
+<!DOCTYPE html>
+<html lang="en" ng-app>
   <head>
     <meta charset="utf-8">
-    <title>Angular.js Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="PassMaker hosted development versions">
+    <meta name="author" content="Jeremie Huchet">
+    <title>Passmaker hosted deployment versions</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/octicons/2.2.3/octicons.min.css" rel="stylesheet" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
     <script type="text/javascript">
-      function indexController($scope, $http){
-        $http.get('https://api.github.com/repos/passmaker/passmaker-online/branches').success(function(data) {
-          $scope.branches = data;
-        });
-        $http.get('https://api.github.com/repos/passmaker/passmaker-online/pulls').success(function(data) {
-          $scope.pullRequests = data;
-        });
+      function indexController($scope, $http) {
+        $scope.branches = [];
+        $scope.pulls = [];
+        if (window.location.href.indexOf('mock') >= 0) {
+          $scope.branches.push({ 'branch': 'feature/ui-feature-a' });
+          $scope.branches.push({ 'branch': 'hotfix/bug-1' });
+          $scope.pulls.push({ 'prId': '7' });
+        } else {
+          $http.get('https://api.github.com/repos/passmaker/dev/git/trees/gh-pages?recursive=1').success(function(data) {
+            angular.forEach(data.tree, function(file) {
+              var pathExtractor = file.path.match(/^(.*)\/\.deployment$/)
+              if (file.type == 'blob' && pathExtractor) {
+                var path = pathExtractor[1];
+                var deployment = {};
+                var prId = path.match(/^pull-request\/(.*)/);
+                if (prId) {
+                  deployment.prId = prId;
+                  $scope.pulls.push(deployment);
+                } else {
+                  deployment.branch = path;
+                  $scope.branches.push(deployment);
+                }
+              }
+            });
+          });
+        }
       }
     </script>
   </head>
   <body ng-controller="indexController">
-    <ul>
-      <li ng-repeat="branch in branches">
-        <a href="/dev/{{ branch.name }}">{{ branch.name }}</a>
-      </li>
-      <li ng-repeat="pr in pullRequests">
-        <a href="/dev/pull-request/{{ pr.id }}">#{{ pr.id }}</a>
-      </li>
-    </ul>
+
+    <div class="container">
+      <div class="header clearfix">
+        <h3 class="text-muted">PassMaker</h3>
+      </div>
+
+      <div class="jumbotron">
+        <h1>Passmaker development versions</h1>
+        <p class="lead">
+          This website exposes development version of <a href="https://passmaker.github.io">PassMaker</a>,
+          an alternative to <a href="http://passwordmaker.org">PasswordMaker</a>.
+        </p>
+        <p><a class="btn btn-lg btn-success" href="https://github.com/passmaker" role="button">Visit Github page</a></p>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6" ng-repeat="deployment in branches">
+          <h4>{{ deployment.branch }}</h4>
+          <span class="mega-octicon octicon-git-branch" style="float: left; padding-right: 20px"></span>
+          <p>
+            Try <a href="https://passmaker.github.io/dev/{{ deployment.branch }}">live demo</a>
+            <br />
+            View <a href="https://github.com/passmaker/passmaker-online/tree/{{ deployment.branch }}">source</a>
+          </p>
+        </div>
+        <div class="col-lg-6" ng-repeat="deployment in pulls">
+          <h4>Pull-request #{{ deployment.prId }}</h4>
+          <span class="mega-octicon octicon-git-pull-request" style="float: left; padding-right: 20px"></span>
+          <p>
+            Try <a href="https://passmaker.github.io/dev/pull-request/{{ deployment.prId }}">Live demo</a>
+            <br />
+            View <a href="https://github.com/passmaker/passmaker-online/pull/{{ deployment.prId }}">pull-request #{{ deployment.prId }}</a>
+          </p>
+        </div>
+      </div>
+
+    </div>
   </body>
 </html>
