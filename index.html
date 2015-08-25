@@ -26,7 +26,7 @@
                 var deployment = {};
                 var prId = path.match(/^pull-request\/(.*)/);
                 if (prId) {
-                  deployment.prId = prId;
+                  deployment.prId = prId[1];
                   $scope.pulls.push(deployment);
                 } else {
                   deployment.branch = path;
